@@ -1,0 +1,52 @@
+Subsets II
+
+Given an integer array nums that may contain duplicates, return all possible subsets (the power set).
+
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,2]
+Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+Example 2:
+
+Input: nums = [0]
+Output: [[],[0]]
+ 
+
+Constraints:
+
+1 <= nums.length <= 10
+-10 <= nums[i] <= 10
+
+Solution:
+C++:
+
+class Solution {
+public:
+    vector<vector<int>> result;
+    void backtrack(vector<int>& nums, vector<int> temp, int idx) {
+        result.push_back(temp);
+        if(idx >= nums.size())
+            return;
+        
+        for(int i = idx; i<nums.size(); i++) {
+            if(i > idx && nums[i] == nums[i-1]) continue; //avoid duplicates
+            
+            temp.push_back(nums[i]);     //include
+            backtrack(nums, temp, i+1);  //explore
+            temp.pop_back();             //exclude
+        }
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        result.clear();
+        
+        vector<int> temp;
+        sort(begin(nums), end(nums)); //will help avoiding duplicates
+        backtrack(nums, temp, 0);
+        
+        return result;
+    }
+};
